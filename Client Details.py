@@ -1,0 +1,23 @@
+import tkinter as tk
+root= tk.Tk()
+root.title("Grid Layout - Padding  and Sticky")
+root.geometry("300x200+100+150")
+root.resizable(True,True)
+root.minsize(300,400)
+root.maxsize(500,400)
+for rowcol in range(2):
+    root.rowconfigure(rowcol, weight =1 )
+    root.columnconfigure(rowcol, weight=1)
+root.rowconfigure(3,weight=2)
+title_label = tk.Label(root, text="Client Details", font = ("Arial",14))
+firstname_label = tk.Label(root,text="First Name")
+surname_label = tk.Label  (root, text="Surname")
+firstname_entry=tk.Entry(root)
+surname_entry  = tk.Entry(root)
+
+title_label.grid(row=0, column=0, columnspan=3)
+firstname_label.grid(row=1, column=0, sticky="N")
+surname_label.grid(row=2, column=0, sticky="N")
+firstname_entry.grid(row=1, column=1, sticky = "NW", pady = 4)
+surname_entry.grid(row=2, column=1, sticky = "NW", pady = 4)
+root.mainloop()
