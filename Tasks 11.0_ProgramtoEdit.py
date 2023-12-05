@@ -412,20 +412,25 @@ class Main(tk.Tk):
         description = simpledialog.askstring("New Bank", "Enter new bank description")
         print(description)
         if description:
-            self.questionBanks.add(description)
-            self.questionBanks.getQuestionBanks()
+            conn = sqlite3.connect('QuizData.db')
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO banks (description) VALUES(?)", (description,))
+            conn.commit()
+            conn.close()
+
             self.populate_bankTree()  
 
     def delBank(self):
-        
-        if self.treeBank.selection():
             selected_bank = self.treeBank.selection()[0]
             bank_details = self.treeBank.item(selected_bank)['values']
-            bank_id = bank_details[0]  
-
-          
+            bank_id = bank_details[0] 
             if askokcancel("Delete", "Are you sure you want to delete this bank?"):
-                self.questionBanks.delBnk(bank_id)
+                conn = sqlite3.connect('QuizData.db')
+                cursor = conn.cursor()
+                cursor.execute("DELETE FROM banks WHERE id = ? ", (bank_id,))
+                conn.commit()
+                conn.close()
+               
                 self.populate_bankTree()  
         else:
             tk.messagebox.showwarning("Warning", "Please select a bank to delete.")
