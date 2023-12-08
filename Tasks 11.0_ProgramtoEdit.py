@@ -414,7 +414,7 @@ class Main(tk.Tk):
         if description:
             conn = sqlite3.connect('QuizData.db')
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO banks (description) VALUES(?)", (description,))
+            cursor.execute("INSERT INTO bank (description) VALUES(?)", (description,))
             conn.commit()
             conn.close()
 
@@ -427,7 +427,7 @@ class Main(tk.Tk):
             if askokcancel("Delete", "Are you sure you want to delete this bank?"):
                 conn = sqlite3.connect('QuizData.db')
                 cursor = conn.cursor()
-                cursor.execute("DELETE FROM banks WHERE id = ? ", (bank_id,))
+                cursor.execute("DELETE FROM bank WHERE id = ? ", (bank_id,))
                 conn.commit()
                 conn.close()
                
@@ -448,7 +448,14 @@ class Main(tk.Tk):
             new_description = simpledialog.askstring("Edit Bank", "Edit bank description", initialvalue=description)
             if new_description and new_description != description:
                 self.questionBanks.updateBnk(bank_id, new_description)
-                self.populate_bankTree()  
+                self.populate_bankTree()
+                conn = sqlite3.connect('QuizData.db')
+                cursor = conn.cursor()
+                cursor.execute("INSERT FROM bank WHERE id = ? ", (new_description, bank_id,))
+                conn.commit()
+                conn.close()
+               
+                self.populate_bankTree()
         else:
             tk.messagebox.showwarning("Warning", "Please select a bank to edit.")
 
